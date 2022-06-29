@@ -50,18 +50,20 @@ public class SlotServices {
 			String[] t = timeslot.split("-");
 		
 		
-		 LocalTime time = LocalTime.parse(t[0].strip()); 
-		 LocalTime time1 = LocalTime.parse(t[1].strip());  
+		 LocalTime startTime = LocalTime.parse(t[0].strip()); 
+		 LocalTime endTime = LocalTime.parse(t[1].strip());  
 		
 		 
-		while(time.compareTo(time1) < 0) {
+		while(startTime.compareTo(endTime) < 0) {
 		Slot slot = new Slot();
-		slot.setStartTime(time);
-		time = time.plusMinutes(duration); 
-		
-		slot.setEndTime(time);
+		LocalTime newTime = startTime.plusMinutes(duration);
+		if(newTime.compareTo(endTime) > 0)
+			break;
+		slot.setStartTime(startTime);
+		slot.setEndTime(newTime);
 		slot.setDuration(duration);
 		
+		startTime = startTime.plusMinutes(duration); 
 		slots.add(slot);
 		}
 		}
