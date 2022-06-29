@@ -1,6 +1,7 @@
 package com.example.appointment.slots;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class SlotController {
 	SlotServices slotServices;
 	
 	 @GetMapping("/get-slots/{duration}")
-	    public ResponseEntity<List<Slot>> getSlots(@PathVariable Integer duration , @RequestParam("dateTime") 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)  LocalDate date) {
+	    public ResponseEntity<List<Slot>> getSlots(@PathVariable Integer duration , @RequestParam(required=true)
+	    @DateTimeFormat(pattern="dd-MM-yyyy")  LocalDate date) {
 	        List<Slot> response = slotServices.getSlots(duration,date);
 
 	        return new ResponseEntity<>(response, HttpStatus.OK);

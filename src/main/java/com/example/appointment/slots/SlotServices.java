@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 
@@ -23,6 +24,16 @@ public class SlotServices {
 	private String mon;
 	@Value("${slot.time.tuesday}")
 	private String tue;
+	@Value("${slot.time.wednesday}")
+	private String wed;
+	@Value("${slot.time.thursday}")
+	private String thur;
+	@Value("${slot.time.friday}")
+	private String fri;
+	@Value("${slot.time.saturday}")
+	private String sat;
+	@Value("${slot.time.sunday}")
+	private String sun;
 	
 	 private static final Logger logger = LoggerFactory.getLogger(SlotServices.class);
 	 
@@ -30,7 +41,6 @@ public class SlotServices {
 	public List<Slot> getSlots(Integer duration, LocalDate date) {
 		List<Slot> slots = new ArrayList<>();
 		System.out.println(mon);
-		
 		
 		int day = date.getDayOfWeek().getValue();
 		String dayto = getDay(day);
@@ -61,13 +71,23 @@ public class SlotServices {
 
 
 	private String getDay(int day) {
-//		if(day==0)
-//			return sun;
+		if(day==0)
+			return sun;
 		if(day==1)
 			return mon;
 		if(day==2)
 			return tue;
+		if(day==3)
+			return wed;
+		if(day==4)
+			return thur;
+		if(day==5)
+			return fri;
+		if(day==6)
+			return sat;
+		
 		return null;
+		
 	}
 	
 	
