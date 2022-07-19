@@ -10,6 +10,7 @@ import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 @Configuration
@@ -18,6 +19,7 @@ public class SwaggerConfig {
     @Bean
     public Docket probizApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+        		 .directModelSubstitute(LocalTime.class, String.class)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())

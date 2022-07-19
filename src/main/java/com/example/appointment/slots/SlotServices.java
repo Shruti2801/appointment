@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+
 public class SlotServices {
 	
 	@Autowired(required=true)
