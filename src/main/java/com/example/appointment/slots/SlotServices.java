@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
@@ -18,8 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SlotServices {
 	
-	@Autowired
-	Repo repo;
+	@Autowired(required=true)
+	private Repo repo;
+	
 	@Value("${slot.time.monday}")
 	private String mon;
 	@Value("${slot.time.tuesday}")
