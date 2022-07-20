@@ -67,7 +67,7 @@ public class AuthController {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
-
+        logger.info("signUpRequest  "+ signUpRequest);
         // Creating user's account
         User user = new User();
         user.setName(signUpRequest.getName());
@@ -78,7 +78,7 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User result = userRepository.save(user);
-
+        logger.info("result  "+ result);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();

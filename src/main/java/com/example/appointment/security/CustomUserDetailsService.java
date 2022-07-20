@@ -4,6 +4,9 @@ package com.example.appointment.security;
 import com.example.appointment.exception.ResourceNotFoundException;
 import com.example.appointment.model.User;
 import com.example.appointment.repository.UserRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
+	private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
     @Autowired
     UserRepository userRepository;
 
@@ -29,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
         );
-
+        logger.info("email   "+email);
         return UserPrincipal.create(user);
     }
 
@@ -38,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("User", "id", id)
         );
-
+        logger.info("id   "+id);
         return UserPrincipal.create(user);
     }
 }

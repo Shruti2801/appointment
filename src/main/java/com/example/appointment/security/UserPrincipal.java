@@ -46,6 +46,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
+    	logger.info("user  attributes "+ attributes.toString() +" email  "+ user.getEmail() +" name " + user.getName() +" ImageUrl " + user.getImageUrl()+" password "+ user.getPassword());
+
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);
         return userPrincipal;

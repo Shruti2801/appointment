@@ -7,6 +7,9 @@ import com.example.appointment.repository.UserRepository;
 import com.example.appointment.security.UserPrincipal;
 import com.example.appointment.security.oauth2.user.OAuth2UserInfo;
 import com.example.appointment.security.oauth2.user.OAuth2UserInfoFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -21,14 +24,15 @@ import java.util.Optional;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-
+	private static final Logger logger = LoggerFactory.getLogger(CustomOAuth2UserService.class);
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-
+        logger.info("loadUser  OAuth2UserRequest {} ", oAuth2UserRequest);
+        logger.info("loadUser  oAuth2User  "+oAuth2User);
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {
@@ -40,6 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+    	logger.info("OAuth2UserRequest  {}   OAuth2User {} ",oAuth2UserRequest, oAuth2User);
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
         if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
@@ -54,11 +59,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
-            user = updateExistingUser(user, oAuth2UserInfo);
+            user = updateExistingUser(user, oAuth2UserInfo);logger.info("update  user {} ",user);
         } else {
-            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo); logger.info("new  user {} ",user);
         }
-
+        logger.info("user {} ",user);
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
